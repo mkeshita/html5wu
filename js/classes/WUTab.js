@@ -20,6 +20,8 @@ class WUTab extends WUStageObject
         this.visible = true;
 
         wuStage.canvas.draw();
+
+        return this;
     }
 
     hide ()
@@ -27,5 +29,7 @@ class WUTab extends WUStageObject
         this.visible = false;
 
         wuStage.canvas.draw();
+
+        return this;
     }
 }

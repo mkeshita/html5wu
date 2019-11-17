@@ -6,6 +6,47 @@ class WUItemBlocksList extends WUStageObject
     {
         super(x, y, 800, 240);
 
+        const r = wuStage.layout.borderRadius;
+
+        this.lArrow = new WUStageObject(20, 92, 50, 60);
+        this.rArrow = new WUStageObject(730, 92, 50, 60);
+
+        this.lArrow.draw = function ()
+        {
+            const x = this.relativeX;
+            const y = this.relativeY;
+            const { w, h } = this;
+
+            wuStage.ctx.fillStyle = '#DDDDDD';
+            wuStage.ctx.beginPath();
+            wuStage.ctx.moveTo(x + w, y + h - r - 2);
+            wuStage.ctx.arcTo( x + w, y,         x + w - r, y,     r);
+            wuStage.ctx.arcTo( x,     y + h / 2, x + w,     y + h, r);
+            wuStage.ctx.arcTo( x + w, y + h,     x + w,     y,     r);
+            wuStage.ctx.fill();
+            wuStage.ctx.closePath();
+        }
+        this.rArrow.draw = function ()
+        {
+            const x = this.relativeX;
+            const y = this.relativeY;
+            const { w, h } = this;
+
+            wuStage.ctx.fillStyle = '#DDDDDD';
+            wuStage.ctx.beginPath();
+            wuStage.ctx.moveTo(x,     y + h - r - 2);
+            wuStage.ctx.arcTo( x,     y,         x + r, y,     r);
+            wuStage.ctx.arcTo( x + w, y + h / 2, x,     y + h, r);
+            wuStage.ctx.arcTo( x,     y + h,     x,     y,     r);
+            wuStage.ctx.fill();
+            wuStage.ctx.closePath();
+        }
+
+        this.lArrow.click = () => this.showPage(--this.currentPage);
+        this.rArrow.click = () => this.showPage(++this.currentPage);
+
+
+        this.currentPage = 0;
         this.pages = [];
         this.blocks = [];
 
@@ -24,7 +65,7 @@ class WUItemBlocksList extends WUStageObject
             }
         }
 
-        this.addMinors(...this.blocks);
+        this.addMinors(this.lArrow, this.rArrow, ...this.blocks);
     }
 
     draw ()
@@ -39,7 +80,22 @@ class WUItemBlocksList extends WUStageObject
 
     setList (items)
     {
-        for (let i = 0; i < items.length; i++) this.blocks[i].setItem(items[i]);
+        if (items.length > 27)
+        {
+            this.pages = [];
+
+            for (let i = 0; i < items.length; i += 27) this.pages.push(items.slice(i, i + 27));
+
+            this.showPage(0);
+        }
+        else
+        {
+            this.pages = [items];
+
+            for (let i = 0; i < items.length; i++) this.blocks[i].setItem(items[i]);
+        }
+
+        return this;
     }
 
     clear ()
@@ -47,5 +103,30 @@ class WUItemBlocksList extends WUStageObject
         const blocks = WUMethods.filter(this.blocks, block => block.visible);
 
         for (let i = 0; i < blocks.length; i++) blocks[i].clear();
+
+        return this;
+    }
+
+    showPage (pageIndex)
+    {
+        const page = this.pages[pageIndex];
+
+        
+        // Set page's items
+        for (let i = 0; i < page.length; i++) this.blocks[i].setItem(page[i]);
+
+
+        // Hide unused item blocks
+        for (let i = page.length; i < 27; i++) this.blocks[i].visible = false;
+
+
+        this.currentPage = pageIndex;
+        this.lArrow.visible = !(this.currentPage <= 0);
+        this.rArrow.visible = !(this.currentPage >= this.pages.length - 1);
+
+
+        wuStage.canvas.draw();
+
+        return this;
     }
 }

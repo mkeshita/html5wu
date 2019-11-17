@@ -5,6 +5,8 @@ class WUMechSummary extends WUStageObject
     constructor (x, y)
     {
         super(x, y, 390, 120);
+
+        this.stats = WUStatsData.getMechSummaryStats();
     }
 
     draw ()
@@ -13,5 +15,10 @@ class WUMechSummary extends WUStageObject
         wuStage.ctx.strokeStyle = '#DDDDDD';
         wuStage.ctx.roundRect(this.relativeX, this.relativeY, this.w, this.h, wuStage.layout.borderRadius);
         wuStage.ctx.stroke();
+    }
+
+    update ()
+    {
+        
     }
 }

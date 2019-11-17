@@ -1,6 +1,6 @@
 class WUMethods
 {
-    // DOM methods
+    // DOM
 
     static dom (tag, data)
     {
@@ -13,7 +13,7 @@ class WUMethods
     }
 
 
-    // Array methods
+    // Array
 
     static push (a, ...b)
     {

@@ -13,16 +13,25 @@ class WUItemBlock extends WUStageObject
     draw ()
     {
         const { relativeX, relativeY, w, h, item } = this;
+        
+        let fillColor   = 'rgba(0, 0, 0, 0.8)';
+        let strokeColor = '#DDDDDD';
+        let imgScale    = 0.9;
 
-        wuStage.ctx.lineWidth = 2;
-        wuStage.ctx.strokeStyle = '#DDDDDD';
-        wuStage.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        if (this.hovered)
+        {
+            fillColor   = 'rgba(10, 15, 30, 0.8)';
+            strokeColor = '#AAAAFF';
+            imgScale    = 1;
+        }
+
+        wuStage.ctx.strokeStyle = strokeColor;
+        wuStage.ctx.fillStyle = fillColor;
+
         wuStage.ctx.roundRect(relativeX, relativeY, w, h, wuStage.layout.borderRadius);
         wuStage.ctx.fill();
         wuStage.ctx.stroke();
-        wuStage.ctx.centerImg(this, 0.9, item.img);
-
-        //wuStage.ctx.drawImage(item.img, relativeX + 4, relativeY + 4, w - 8, h - 8)
+        wuStage.ctx.centerImg(this, imgScale, item.img);
     }
 
     setItem (item)
@@ -39,6 +48,8 @@ class WUItemBlock extends WUStageObject
 
     click ()
     {
-        
+        wuStage.selectItemTab.hide().currentSlot.setItem(this.item);
+        wuStage.mechSummary.update();
+        wuStage.canvas.draw();
     }
 }

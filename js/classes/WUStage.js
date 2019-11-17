@@ -25,7 +25,7 @@ class WUStage extends WUStageObject
                 if (minors[i].visible) minors[i].draw();
             }
         };
-        this.canvas.addEventListener('click', e =>
+        this.canvas.addEventListener('mousedown', e =>
         {
             const canvasBounding = this.canvas.getBoundingClientRect();
 
@@ -51,12 +51,61 @@ class WUStage extends WUStageObject
                         mouse,
                     };
 
-                    console.log(e);
-
                     if (typeof target.click === 'function') target.click(e);
 
                     return;
                 }
+            }
+        });
+        this.canvas.addEventListener('mousemove', e =>
+        {
+            const canvasBounding = this.canvas.getBoundingClientRect();
+
+            const mouse = {
+                x: e.clientX - canvasBounding.x,
+                y: e.clientY - canvasBounding.y,
+            };
+
+            const minors = this.getMinors();
+
+            for (let i = minors.length; i--;)
+            {
+                const target = minors[i];
+
+                if (target.visible &&
+                    mouse.x > target.relativeX &&
+                    mouse.y > target.relativeY &&
+                    mouse.x < target.relativeX + target.w &&
+                    mouse.y < target.relativeY + target.h)
+                {
+                    const e = {
+                        target,
+                        mouse,
+                    };
+
+                    if (!target.hovered)
+                    {
+                        target.hovered = true;
+
+                        if (this.lastHovered) this.lastHovered.hovered = false;
+
+                        this.lastHovered = target;
+
+                        typeof target.hover === 'function' && target.hover(e);
+
+                        this.canvas.draw();
+                    }
+
+                    return;
+                }
+            }
+
+            if (this.lastHovered)
+            {
+                this.lastHovered.hovered = false;
+                this.lastHovered = null;
+
+                this.canvas.draw();
             }
         });
 
@@ -116,7 +165,7 @@ class WUStage extends WUStageObject
 
         this.selectItemTab = new WUSelectItemTab();
 
-        this.mechSummary = new WUMechSummary(460, 430);
+        this.mechSummary = new WUMechSummary(490, 430);
 
         this.addMinors(...this.equipmentSlots, this.mechSummary, this.selectItemTab);
 

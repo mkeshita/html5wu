@@ -6,6 +6,8 @@ class WUSelectItemTab extends WUTab
     {
         super();
 
+        this.currentSlot = null;
+        
         this.itemBlocksList = new WUItemBlocksList(100, 290);
 
         this.addMinors(this.itemBlocksList);
@@ -20,19 +22,15 @@ class WUSelectItemTab extends WUTab
     {
         this.visible = true;
 
-        const items = WUMethods.filter(WUItemsDB.getAll(), item => item.type === slot.type);
+        if (!this.currentSlot || slot.type !== this.currentSlot.type)
+        {
+            const items = WUMethods.filter(WUItemsDB.getAll(), item => item.type === slot.type);
 
-        this.itemBlocksList.setList(items);
+            this.itemBlocksList.clear().setList(items);
+        }
 
-        wuStage.canvas.draw();
-    }
+        this.currentSlot = slot;
 
-    hide ()
-    {
-        this.visible = false;
-
-        this.itemBlocksList.clear();
-        
         wuStage.canvas.draw();
     }
 }

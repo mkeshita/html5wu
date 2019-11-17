@@ -9,6 +9,7 @@ class WUStageObject
         this.w = w;
         this.h = h;
 
+        this.hovered = false;
         this.visible = true;
         this.minors = [];
         this.parent = null;
