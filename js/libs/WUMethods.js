@@ -26,7 +26,7 @@ class WUMethods
     {
         const b = [];
 
-        for (let i = a.length; i--;) b[i] = f(a[i]);
+        for (let i = 0; i < a.length; i++) b[i] = f(a[i], i);
 
         return b;
     }
@@ -66,5 +66,37 @@ class WUMethods
         }
     
         return b;
+    }
+
+    static loop (a, f)
+    {
+        for (let i = 0; i < a.length; i++) f(a[i], i);
+    }
+
+
+    // Local Storage
+
+    static setLS (key, value)
+    {
+        localStorage.setItem(key, JSON.stringify(value))
+
+        return value;
+    }
+
+    static getLS (key)
+    {
+        const data = localStorage.getItem(key);
+
+        if (typeof data === 'undefined') return;
+
+        return JSON.parse(data);
+    }
+
+
+    // Object Manufacturing
+
+    static set (obj, data)
+    {
+        this.loop(Object.keys(data), key => obj[key] = data[key]);
     }
 }

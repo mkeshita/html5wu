@@ -13,8 +13,10 @@ class WUEquipmentSlot extends WUStageObject
 
     draw ()
     {
-        let fillColor   = 'rgba(0, 0, 0, 0.8)';
-        let strokeColor = '#DDDDDD';
+        const c = wuStage.ctx;
+
+        let fillColor   = wuStage.layout.bgColor;
+        let strokeColor = wuStage.layout.textColor;
         let imgScale    = 0.9;
         let img         = this.img;
 
@@ -30,23 +32,18 @@ class WUEquipmentSlot extends WUStageObject
             img      = this.item.img;
         }
 
-        wuStage.ctx.lineWidth = 2;
-        wuStage.ctx.strokeStyle = strokeColor;
-        wuStage.ctx.fillStyle = fillColor;
+        c.lineWidth   = 2;
+        c.strokeStyle = strokeColor;
+        c.fillStyle   = fillColor;
 
-        wuStage.ctx.roundRect(this.relativeX, this.relativeY, this.w, this.h, wuStage.layout.borderRadius);
-        wuStage.ctx.fill();
-        wuStage.ctx.stroke();
-        wuStage.ctx.centerImg(this, imgScale, img);
+        c.roundRect(this.relativeX, this.relativeY, this.w, this.h, wuStage.layout.borderRadius);
+        c.fill();
+        c.stroke();
+        c.centerImg(this, imgScale, img);
     }
 
     click ()
     {
         wuStage.selectItemTab.show(this);
-    }
-
-    setItem (item)
-    {
-        this.item = item;
     }
 }

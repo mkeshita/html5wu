@@ -7,23 +7,25 @@ class WUStage extends WUStageObject
         super(0, 0, w, h);
 
         this.layout = {
-            borderRadius: 5,
+            bgColor:        'rgba(0, 0, 0, 0.8)',
+            hoverBgColor:   'rgba(10, 15, 30, 0.8)',
+            overBgColor:    'rgba(0, 30, 80, 0.1)',
+            textColor:      '#DDDDDD',
+            hoverTextColor: '#AAAAFF',
+            borderRadius:   5,
         };
 
 
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = w;
+        this.canvas        = document.createElement('canvas');
+        this.canvas.width  = w;
         this.canvas.height = h;
-        this.canvas.draw = () =>
+        this.canvas.draw   = () =>
         {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
             const minors = this.getMinors();
     
-            for (let i = 0; i < minors.length; i++)
-            {
-                if (minors[i].visible) minors[i].draw();
-            }
+            for (let i = 0; i < minors.length; i++) if (minors[i].visible) minors[i].draw();
         };
         this.canvas.addEventListener('mousedown', e =>
         {
@@ -41,10 +43,10 @@ class WUStage extends WUStageObject
                 const target = minors[i];
 
                 if (target.visible &&
-                    mouse.x > target.relativeX &&
-                    mouse.y > target.relativeY &&
-                    mouse.x < target.relativeX + target.w &&
-                    mouse.y < target.relativeY + target.h)
+                    mouse.x > target.relativeX * wuStage.canvas.getScale() &&
+                    mouse.y > target.relativeY * wuStage.canvas.getScale() &&
+                    mouse.x < target.relativeX * wuStage.canvas.getScale() + target.w * wuStage.canvas.getScale() &&
+                    mouse.y < target.relativeY * wuStage.canvas.getScale() + target.h * wuStage.canvas.getScale())
                 {
                     const e = {
                         target,
@@ -59,11 +61,11 @@ class WUStage extends WUStageObject
         });
         this.canvas.addEventListener('mousemove', e =>
         {
-            const canvasBounding = this.canvas.getBoundingClientRect();
+            const b = this.canvas.getBoundingClientRect();
 
             const mouse = {
-                x: e.clientX - canvasBounding.x,
-                y: e.clientY - canvasBounding.y,
+                x: e.clientX - b.x,
+                y: e.clientY - b.y,
             };
 
             const minors = this.getMinors();
@@ -73,10 +75,10 @@ class WUStage extends WUStageObject
                 const target = minors[i];
 
                 if (target.visible &&
-                    mouse.x > target.relativeX &&
-                    mouse.y > target.relativeY &&
-                    mouse.x < target.relativeX + target.w &&
-                    mouse.y < target.relativeY + target.h)
+                    mouse.x > target.relativeX * wuStage.canvas.getScale() &&
+                    mouse.y > target.relativeY * wuStage.canvas.getScale() &&
+                    mouse.x < target.relativeX * wuStage.canvas.getScale() + target.w * wuStage.canvas.getScale() &&
+                    mouse.y < target.relativeY * wuStage.canvas.getScale() + target.h * wuStage.canvas.getScale())
                 {
                     const e = {
                         target,
@@ -91,7 +93,7 @@ class WUStage extends WUStageObject
 
                         this.lastHovered = target;
 
-                        typeof target.hover === 'function' && target.hover(e);
+                        if (typeof target.hover === 'function') target.hover(e);
 
                         this.canvas.draw();
                     }
@@ -144,9 +146,14 @@ class WUStage extends WUStageObject
             const imgY = obj.relativeY + (obj.h - imgH) / 2;
 
             wuStage.ctx.drawImage(img, imgX, imgY, imgW, imgH);
+        };
+        this.canvas.getScale = function ()
+        {
+            return this.getBoundingClientRect().width / this.width;
         }
 
         WUMEquipmentSlotsData.createImgs();
+        WUStatsData.createImgs();
         WUItemsDB.createImgs();
     }
 
@@ -163,11 +170,13 @@ class WUStage extends WUStageObject
             this.equipmentSlots[i] = new WUEquipmentSlot(x, y, w, h, type, img);
         }
 
+        this.mechDisplay = new WUMechDisplay(635, 325, 100, 100);
+
         this.selectItemTab = new WUSelectItemTab();
 
-        this.mechSummary = new WUMechSummary(490, 430);
+        this.mechSummary = new WUMechSummary(465, 430);
 
-        this.addMinors(...this.equipmentSlots, this.mechSummary, this.selectItemTab);
+        this.addMinors(this.mechDisplay, ...this.equipmentSlots, this.mechSummary, this.selectItemTab);
 
         this.canvas.draw();
     }

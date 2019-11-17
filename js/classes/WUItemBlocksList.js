@@ -6,6 +6,7 @@ class WUItemBlocksList extends WUStageObject
     {
         super(x, y, 800, 240);
 
+        const c = wuStage.ctx;
         const r = wuStage.layout.borderRadius;
 
         this.lArrow = new WUStageObject(20, 92, 50, 60);
@@ -17,14 +18,26 @@ class WUItemBlocksList extends WUStageObject
             const y = this.relativeY;
             const { w, h } = this;
 
-            wuStage.ctx.fillStyle = '#DDDDDD';
-            wuStage.ctx.beginPath();
-            wuStage.ctx.moveTo(x + w, y + h - r - 2);
-            wuStage.ctx.arcTo( x + w, y,         x + w - r, y,     r);
-            wuStage.ctx.arcTo( x,     y + h / 2, x + w,     y + h, r);
-            wuStage.ctx.arcTo( x + w, y + h,     x + w,     y,     r);
-            wuStage.ctx.fill();
-            wuStage.ctx.closePath();
+            let color = wuStage.layout.textColor;
+
+            c.beginPath();
+            c.moveTo(x + w, y + h - r - 2);
+            c.arcTo( x + w, y,         x + w - r, y,     r);
+            c.arcTo( x,     y + h / 2, x + w,     y + h, r);
+            c.arcTo( x + w, y + h,     x + w,     y,     r);
+
+            if (this.hovered)
+            {
+                color = wuStage.layout.hoverTextColor;
+
+                c.strokeStyle = color;
+                c.lineWidth = 3;
+                c.stroke();
+            }
+
+            c.fillStyle = color;
+            c.fill();
+            c.closePath();
         }
         this.rArrow.draw = function ()
         {
@@ -32,14 +45,26 @@ class WUItemBlocksList extends WUStageObject
             const y = this.relativeY;
             const { w, h } = this;
 
-            wuStage.ctx.fillStyle = '#DDDDDD';
-            wuStage.ctx.beginPath();
-            wuStage.ctx.moveTo(x,     y + h - r - 2);
-            wuStage.ctx.arcTo( x,     y,         x + r, y,     r);
-            wuStage.ctx.arcTo( x + w, y + h / 2, x,     y + h, r);
-            wuStage.ctx.arcTo( x,     y + h,     x,     y,     r);
-            wuStage.ctx.fill();
-            wuStage.ctx.closePath();
+            let color = wuStage.layout.textColor;
+            
+            c.beginPath();
+            c.moveTo(x,     y + h - r - 2);
+            c.arcTo( x,     y,         x + r, y,     r);
+            c.arcTo( x + w, y + h / 2, x,     y + h, r);
+            c.arcTo( x,     y + h,     x,     y,     r);
+
+            if (this.hovered)
+            {
+                color = wuStage.layout.hoverTextColor;
+
+                c.strokeStyle = color;
+                c.lineWidth = 3;
+                c.stroke();
+            }
+
+            c.fillStyle = color;
+            c.fill();
+            c.closePath();
         }
 
         this.lArrow.click = () => this.showPage(--this.currentPage);
@@ -70,12 +95,14 @@ class WUItemBlocksList extends WUStageObject
 
     draw ()
     {
-        wuStage.ctx.lineWidth = 2;
-        wuStage.ctx.strokeStyle = '#DDDDDD';
-        wuStage.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        wuStage.ctx.roundRect(this.relativeX, this.relativeY, this.w, this.h, wuStage.layout.borderRadius);
-        wuStage.ctx.fill();
-        wuStage.ctx.stroke();
+        const c = wuStage.ctx;
+
+        c.lineWidth   = 2,
+        c.strokeStyle = wuStage.layout.textColor,
+        c.fillStyle   = wuStage.layout.bgColor,
+        c.roundRect(this.relativeX, this.relativeY, this.w, this.h, wuStage.layout.borderRadius);
+        c.fill();
+        c.stroke();
     }
 
     setList (items)
@@ -85,8 +112,6 @@ class WUItemBlocksList extends WUStageObject
             this.pages = [];
 
             for (let i = 0; i < items.length; i += 27) this.pages.push(items.slice(i, i + 27));
-
-            this.showPage(0);
         }
         else
         {
@@ -94,6 +119,8 @@ class WUItemBlocksList extends WUStageObject
 
             for (let i = 0; i < items.length; i++) this.blocks[i].setItem(items[i]);
         }
+
+        this.showPage(0);
 
         return this;
     }

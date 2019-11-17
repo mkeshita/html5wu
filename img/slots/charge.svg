@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100">
-  <path transform="translate(50, 50)" style="fill:#DDD" d="M50 -29.85L5.45 37.15L-5.2 37.15L-50 -29.85L-44.9 -37.15L45 -37.15L50 -29.85M42.8 -32.85L-42.45 -32.85L-44.35 -29.85L-3 32.5L3.1 32.5L44.55 -29.85L42.8 -32.85M0 28.75L-37 -27.25L37.45 -27.25L0 28.75" />
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40">
+  <path fill="rgba(0, 0, 0, 0)" stroke-width="2" stroke="#DDDDDD" d="M3 6H37L39 8L22 34H18L1 8Z"/>
+  <path fill="#DDDDDD" d="M5 9H35L20 31Z"/>
 </svg>

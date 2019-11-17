@@ -18,20 +18,6 @@ class WUMEquipmentSlotsData
             type: 2,
             imgName: 'legs',
         }, {
-            x: 50,
-            y: 150,
-            w: 80,
-            h: 80,
-            type: 3,
-            imgName: 'side-l',
-        }, {
-            x: 290,
-            y: 150,
-            w: 80,
-            h: 80,
-            type: 3,
-            imgName: 'side-r',
-        }, {
             x: 60,
             y: 250,
             w: 80,
@@ -41,6 +27,20 @@ class WUMEquipmentSlotsData
         }, {
             x: 280,
             y: 250,
+            w: 80,
+            h: 80,
+            type: 3,
+            imgName: 'side-r',
+        }, {
+            x: 50,
+            y: 150,
+            w: 80,
+            h: 80,
+            type: 3,
+            imgName: 'side-l',
+        }, {
+            x: 290,
+            y: 150,
             w: 80,
             h: 80,
             type: 3,

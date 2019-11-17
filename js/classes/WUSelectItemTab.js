@@ -15,7 +15,7 @@ class WUSelectItemTab extends WUTab
 
     click ()
     {
-        this.hide();
+        this.selectItem(null);
     }
 
     show (slot)
@@ -32,5 +32,29 @@ class WUSelectItemTab extends WUTab
         this.currentSlot = slot;
 
         wuStage.canvas.draw();
+    }
+
+    selectItem (item)
+    {
+        if (item && item === this.currentSlot.item)
+        {
+            this.hide();
+
+            return;
+        }
+        
+
+        this.currentSlot.item = item;
+
+        wuStage.mechSummary.update();
+
+        if (this.currentSlot.type < 6)
+        {
+            const setup = WUMethods.map(wuStage.equipmentSlots, slot => slot.item);
+
+            wuStage.mechDisplay.assemble(setup);
+        }
+
+        this.hide();
     }
 }
