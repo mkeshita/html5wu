@@ -4,7 +4,7 @@ class WUStatsData
 {
     static genSrc (stat)
     {
-        return `/img/stats/${ stat.name }.svg`;
+        return `html5wu/img/stats/${ stat.name }.svg`;
     }
 
     static weight = {

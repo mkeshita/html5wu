@@ -1,6 +1,6 @@
 class WUMEquipmentSlotsData
 {
-    static imgsPath = '/img/slots/';
+    static imgsPath = 'html5wu/img/slots/';
     static imgsType = '.svg';
 
     static get = [{
