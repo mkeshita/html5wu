@@ -2,7 +2,7 @@
   
 class WUItemsDB
 {
-    static imgsPath = 'html5wu/img/items/';
+    static imgsPath = '/img/items/';
 
     static official = [{
         name: 'Interceptor',
