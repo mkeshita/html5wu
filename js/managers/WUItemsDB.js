@@ -2,7 +2,7 @@
   
 class WUItemsDB
 {
-    static imgsPath = '/img/items/';
+    static imgsPath = './img/items/';
 
     static official = [{
         name: 'Interceptor',
